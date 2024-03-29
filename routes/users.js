@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/User");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secretKey = require("../config/config");
 
 //@route    POST
 //@des      Register new user
@@ -34,9 +36,20 @@ router.post(
       let hashedPassword = await bcrypt.hash(password, salt);
       user = new User({ name, password: hashedPassword, email });
       await user.save();
-      res.status(200).json({ msg: "User is registered." });
+
+      let token;
+
+      try {
+        token = jwt.sign({ userId: user.id }, secretKey.secretKey, {
+          expiresIn: "1d",
+        });
+        res.status(200).json({ token });
+      } catch (err) {
+        res.status(500).json(err);
+      }
     } catch (err) {
       console.log(err.message);
+      res.status(500).json({ msg: "Internal server error." });
     }
   }
 );
