@@ -38,12 +38,11 @@ router.post(
       await user.save();
 
       let token;
-
       try {
         token = jwt.sign({ userId: user.id }, secretKey.secretKey, {
           expiresIn: "1d",
         });
-        res.status(200).json({ token });
+        res.status(200).json(token);
       } catch (err) {
         res.status(500).json(err);
       }
