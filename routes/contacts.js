@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const contactModel = require("../models/Contacts");
+const contactModel = require("../models/Contact");
 
 //@route get api/contacts
 //@desc get all contacts
@@ -17,11 +17,13 @@ router.get("/", async (req, res) => {
 
 //@route get api/contacts/:name
 //@desc get contact by name
-router.get("/:name", async (req, res) => {
+router.get("/:contactName", async (req, res) => {
   try {
-    const contact = await contactModel.find({ contactName: req.params.name });
-    if (contact.length === 0) {
-      return res.status(404).json({ message: "Contacts not found." });
+    const contact = await contactModel.findOne({
+      contactName: req.params.contactName,
+    });
+    if (!contact) {
+      return res.status(404).json({ message: "Contact not found." });
     }
     res.status(200).json(contact);
   } catch (e) {
@@ -54,16 +56,16 @@ router.post("/", async (req, res) => {
 //@route PUT api/contacts/:name
 //@desc update new contact details
 
-router.put("/:name", async (req, res) => {
+router.put("/:contactName", async (req, res) => {
   try {
-    let existingContact = await contactModel.findOne({
-      contactName: req.params.name,
+    let contact = await contactModel.findOne({
+      contactName: req.params.contactName,
     });
-    if (!existingContact) {
+    if (!contact) {
       return res.status(400).json({ message: "Contact not found." });
     }
     await contactModel.updateOne(
-      { contactName: req.params.name },
+      { contactName: req.params.contactName },
       {
         contactName: req.body.contactName,
         telephone: req.body.telephone,
@@ -79,15 +81,15 @@ router.put("/:name", async (req, res) => {
 
 //@route Delete api/contacts/:name
 //@desc Delete contact
-router.delete("/:name", async (req, res) => {
+router.delete("/:contactName", async (req, res) => {
   try {
-    const existingContact = await contactModel.findOne({
-      contactName: req.params.name,
+    const contact = await contactModel.findOne({
+      contactName: req.params.contactName,
     });
-    if (!existingContact) {
+    if (!contact) {
       return res.status(400).json({ message: "Contact not found" });
     }
-    await contactModel.deleteOne({ contactName: req.params.name });
+    await contactModel.deleteOne({ contactName: req.params.contactName });
     res.status(200).json({ message: "Contact deleted sucessfully" });
   } catch (e) {
     res

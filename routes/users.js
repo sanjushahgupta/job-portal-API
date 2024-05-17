@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
+const userModel = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secretKey = require("../config/config");
@@ -11,25 +11,29 @@ const secretKey = require("../config/config");
 
 router.post("/signup", async (req, res) => {
   const { userName, email, password } = req.body;
-  if (!email || !password) {
+  if (!email || !password || !userName) {
     return res.status(400).json({ message: "Invalid input" });
   }
+
   try {
-    bcrypt.hash(password, 10, async function (err, hashPassword) {
-      await User.create({
-        userName: userName,
-        email: email,
-        password: hashPassword,
-      });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await userModel.create({
+      userName: userName,
+      email: email,
+      password: hashedPassword,
     });
+
     const payload = { email: email };
     const expire = { expiresIn: "1d" };
     const token = jwt.sign(payload, secretKey.secretKey, expire);
+
     res.status(200).json({ token: token });
   } catch (e) {
-    res
-      .status(500)
-      .json({ message: "Error occured while creating account", e });
+    if (e.code === 11000) {
+      res.status(400).json({ message: "Email is already registered" });
+    } else {
+      res.status(500).json({ message: "Error occured while creating account" });
+    }
   }
 });
 
