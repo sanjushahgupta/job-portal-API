@@ -10,7 +10,7 @@ const secretKey = require("../config/config");
 //@des      Register new user
 //@access   Public
 
-router.post("/signin", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const { userName, email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "Invalid input" });
