@@ -1,1 +1,1 @@
-module.exports.secretKey = process.env.SECRET_KEY || "secretKey";
+module.exports.secretKey = process.env.SECRET_KEY || "sec67bdfsiuretKey";

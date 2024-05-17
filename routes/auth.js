@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 //@route    POST api/auth
 //@desc     auth user -> get token
 //@access   public
-router.post("/", (req, res) => {
+router.post("/login", (req, res) => {
   res.send("Log in user");
 });
 
