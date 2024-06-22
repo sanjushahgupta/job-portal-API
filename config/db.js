@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const db =
-  "mongodb+srv://sanju:2rxbjjbd@contact-keeper.2usmgwz.mongodb.net/?retryWrites=true&w=majority&appName=contact-keeper";
+const db = process.env.DATABASE_URL;
 
 const connectDB = async () => {
   try {

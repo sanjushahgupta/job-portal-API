@@ -63,17 +63,13 @@ router.post("/", checkToken, async (req, res) => {
         console.log("Unauthorized", err);
         res.sendStatus(403);
       } else {
-        const { jobTitle, jobDetails } = req.body;
-        if (!jobTitle || !jobDetails) {
+        const { title, details } = req.body;
+        if (!title || !details) {
           res.status(400).json({ message: "Invalid inputs" });
         }
-        const job = await jobModel.findOne({
-          jobTitle: req.params.jobTitle,
-        });
-
         const newJobPost = await jobModel.create({
-          jobTitle: jobTitle,
-          jobDetails: jobDetails,
+          title: title,
+          details: details,
         });
         res.status(201).json({
           message: "Job added successfully",
@@ -105,8 +101,8 @@ router.put("/:_id", checkToken, async (req, res) => {
         const updateJob = await jobModel.updateOne(
           { _id: req.params._id },
           {
-            jobTitle: req.body.jobTitle,
-            jobDetails: req.body.jobDetails,
+            title: req.body.title,
+            details: req.body.details,
           }
         );
         res.status(200).json({ message: "Job updated sucessfully" });
