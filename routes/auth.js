@@ -33,6 +33,7 @@ router.post("/login", async (req, res) => {
         expiresIn: "1d",
       });
       res.status(200).json({ token: token });
+      //
     });
   } catch (e) {
     res.status(500).json({ message: "Something went wrong" });

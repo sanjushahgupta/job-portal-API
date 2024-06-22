@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const ContactScheme = mongoose.Schema({
-  contactName: {
+  jobTitle: {
     type: String,
     required: true,
-    unique: true,
   },
-  telephone: {
+  jobDetails: {
     type: String,
     required: true,
   },

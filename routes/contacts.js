@@ -1,6 +1,20 @@
 const express = require("express");
 const router = express.Router();
+
+const jwt = require("jsonwebtoken");
 const contactModel = require("../models/Contact");
+const secretKey = require("../config/config");
+
+const checkToken = (req, res, next) => {
+  const header = req.headers["authorization"];
+  if (typeof header !== undefined) {
+    const bearer = header.split(" ");
+    req.token = bearer[1];
+    next();
+  } else {
+    res.status(403).json({ message: "Unauthorized 6" });
+  }
+};
 
 //@route get api/contacts
 //@desc get all contacts
@@ -17,10 +31,10 @@ router.get("/", async (req, res) => {
 
 //@route get api/contacts/:name
 //@desc get contact by name
-router.get("/:contactName", async (req, res) => {
+router.get("/:jobTitle", async (req, res) => {
   try {
     const contact = await contactModel.findOne({
-      contactName: req.params.contactName,
+      jobTitle: req.params.jobTitle,
     });
     if (!contact) {
       return res.status(404).json({ message: "Contact not found." });
@@ -35,17 +49,26 @@ router.get("/:contactName", async (req, res) => {
 
 //@route post api/contacts/
 //@desc add new contact
-router.post("/", async (req, res) => {
+router.post("/", checkToken, async (req, res) => {
   try {
-    const { contactName, telephone } = req.body;
-    if (!contactName || !telephone) {
-      res.status(400).json({ message: "Invalid inputs" });
-    }
-    await contactModel.create({
-      contactName: contactName,
-      telephone: telephone,
+    jwt.verify(req.token, secretKey.secretKey, async (err, data) => {
+      if (err) {
+        console.log("Unauthorized", err);
+        res.sendStatus(403);
+      } else {
+        const { jobTitle, jobDetails: jobDetails } = req.body;
+        if (!jobTitle || !jobDetails) {
+          res.status(400).json({ message: "Invalid inputs" });
+        }
+        await contactModel.create({
+          jobTitle: jobTitle,
+          jobDetails: jobDetails,
+        });
+        res.status(201).json({ message: "Contacts added successfully" });
+      }
     });
-    res.status(201).json({ message: "Contacts added successfully" });
+
+    //login page
   } catch (e) {
     res
       .status(500)
@@ -56,19 +79,19 @@ router.post("/", async (req, res) => {
 //@route PUT api/contacts/:name
 //@desc update new contact details
 
-router.put("/:contactName", async (req, res) => {
+router.put("/:jobTitle", async (req, res) => {
   try {
     let contact = await contactModel.findOne({
-      contactName: req.params.contactName,
+      jobTitle: req.params.jobTitle,
     });
     if (!contact) {
       return res.status(400).json({ message: "Contact not found." });
     }
     await contactModel.updateOne(
-      { contactName: req.params.contactName },
+      { jobTitle: req.params.jobTitle },
       {
-        contactName: req.body.contactName,
-        telephone: req.body.telephone,
+        jobTitle: req.body.jobTitle,
+        jobTitle: req.body.jobTitle,
       }
     );
     res.status(200).json({ message: "Contact updated sucessfully" });
@@ -81,15 +104,15 @@ router.put("/:contactName", async (req, res) => {
 
 //@route Delete api/contacts/:name
 //@desc Delete contact
-router.delete("/:contactName", async (req, res) => {
+router.delete("/:jobTitle", async (req, res) => {
   try {
     const contact = await contactModel.findOne({
-      contactName: req.params.contactName,
+      jobTitle: req.params.jobTitle,
     });
     if (!contact) {
       return res.status(400).json({ message: "Contact not found" });
     }
-    await contactModel.deleteOne({ contactName: req.params.contactName });
+    await contactModel.deleteOne({ jobTitle: req.params.jobTitle });
     res.status(200).json({ message: "Contact deleted sucessfully" });
   } catch (e) {
     res
