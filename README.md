@@ -1,17 +1,15 @@
-# Contact Keeper API [![made-with-node](https://img.shields.io/badge/Made%20with-Node.js-1f425f.svg)](https://nodejs.org/)
+# JobPortal API [![made-with-node](https://img.shields.io/badge/Made%20with-Node.js-1f425f.svg)](https://nodejs.org/)
 
-An API to manage contacts, allowing users to register, login, and manipulate contact information.
+An API for managing job posts.
 
-## Planned Features
-- Register new user
-- Login User
-- Retrieve lists of contacts
-- Add/update/remove contacts details
-- Deregister user
+## Features
+User Authentication: Sign up, log in, and secure job postings.
+Job Posting: Create new job listings with various details.
+Job Management: Edit, update, and delete job posts.
   
 ## Contributions
 
-Contributions to the Contact Keeper API are always welcome.
+Contributions to the JobPortal API are always welcome.
 
 If you have any suggestions, improvements, or bug fixes, please feel free to submit a pull request.
 
