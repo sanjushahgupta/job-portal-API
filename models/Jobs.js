@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const ContactScheme = mongoose.Schema({
+const JobScheme = mongoose.Schema({
   jobTitle: {
     type: String,
     required: true,
@@ -10,4 +10,4 @@ const ContactScheme = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("contact", ContactScheme);
+module.exports = mongoose.model("job", JobScheme);
