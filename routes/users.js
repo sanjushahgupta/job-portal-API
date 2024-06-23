@@ -25,14 +25,13 @@ router.post("/signup", async (req, res) => {
 
     const payload = { email: email };
     const expire = { expiresIn: "1d" };
-    const token = jwt.sign(payload, secretKey.secretKey, expire);
-
+    const token = jwt.sign(payload, secretKey, expire);
     res.status(200).json({ token: token });
   } catch (e) {
     if (e.code === 11000) {
       res.status(400).json({ message: "Email is already registered" });
     } else {
-      res.status(500).json({ message: "Error occured while creating account" });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 });

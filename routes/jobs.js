@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 const jobModel = require("../models/Jobs");
-const secretKey = require("../config/config");
+const { secretKey } = require("../config/config");
 
 const checkToken = (req, res, next) => {
   const header = req.headers["authorization"];
@@ -33,7 +33,7 @@ const checkToken = (req, res, next) => {
 //@desc get job by id
 router.get("/:_id", checkToken, async (req, res) => {
   try {
-    jwt.verify(req.token, secretKey.secretKey, async (err, data) => {
+    jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
         console.log("Unauthorized", err);
         res.sendStatus(403);
@@ -58,7 +58,7 @@ router.get("/:_id", checkToken, async (req, res) => {
 //@desc add new job
 router.post("/", checkToken, async (req, res) => {
   try {
-    jwt.verify(req.token, secretKey.secretKey, async (err, data) => {
+    jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
         console.log("Unauthorized", err);
         res.sendStatus(403);
@@ -67,14 +67,18 @@ router.post("/", checkToken, async (req, res) => {
         if (!title || !details) {
           res.status(400).json({ message: "Invalid inputs" });
         }
-        const newJobPost = await jobModel.create({
-          title: title,
-          details: details,
-        });
-        res.status(201).json({
-          message: "Job added successfully",
-          job: newJobPost,
-        });
+        try {
+          const newJobPost = await jobModel.create({
+            title: title,
+            details: details,
+          });
+          res.status(201).json({
+            message: "Job added successfully",
+            job: newJobPost,
+          });
+        } catch (e) {
+          res.status(500).json({ message: "error while creating job posts" });
+        }
       }
     });
   } catch (e) {
@@ -87,7 +91,7 @@ router.post("/", checkToken, async (req, res) => {
 
 router.put("/:_id", checkToken, async (req, res) => {
   try {
-    jwt.verify(req.token, secretKey.secretKey, async (err, data) => {
+    jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
         console.log("Unauthorized", err);
         res.sendStatus(403);
@@ -119,7 +123,7 @@ router.put("/:_id", checkToken, async (req, res) => {
 //@desc Delete job
 router.delete("/:_id", checkToken, async (req, res) => {
   try {
-    jwt.verify(req.token, secretKey.secretKey, async (err, data) => {
+    jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
         console.log("Unauthorized", err);
         res.sendStatus(403);
