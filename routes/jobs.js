@@ -13,7 +13,7 @@ const checkToken = (req, res, next) => {
     req.token = bearer[1];
     next();
   } else {
-    res.status(403).json({ message: "Unauthorized" });
+    return res.status(403).json({ message: "Unauthorized" });
   }
 };
 
@@ -27,7 +27,7 @@ router.get("/:_id", checkToken, async (req, res) => {
       }
     });
   } catch (e) {
-    res
+    return res
       .status(500)
       .json({ message: "An error occurred while fetching the job" });
   }
@@ -45,7 +45,9 @@ router.post("/", checkToken, async (req, res) => {
       }
     });
   } catch (e) {
-    res.status(500).json({ message: "An error occurred while adding the job" });
+    return res
+      .status(500)
+      .json({ message: "An error occurred while adding the job" });
   }
 });
 
@@ -61,7 +63,7 @@ router.put("/:_id", checkToken, async (req, res) => {
       }
     });
   } catch (e) {
-    res
+    return res
       .status(500)
       .json({ message: "An error occurred while updating the Job" });
   }
@@ -79,7 +81,7 @@ router.delete("/:_id", checkToken, async (req, res) => {
       }
     });
   } catch (e) {
-    res
+    return res
       .status(500)
       .json({ message: "An error occurred while updating the Job" });
   }

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userModel = require("../models/User");
+const controller = require("../controller/users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { secretKey } = require("../config/config");
@@ -16,24 +17,9 @@ router.post("/signup", async (req, res) => {
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    await userModel.create({
-      userName: userName,
-      email: email,
-      password: hashedPassword,
-    });
-
-    const payload = { email: email };
-    const expire = { expiresIn: "1d" };
-    const token = jwt.sign(payload, secretKey, expire);
-    res.status(200).json({ token: token });
+    await controller.registerUser(req, res);
   } catch (e) {
-    if (e.code === 11000) {
-      res.status(400).json({ message: "Email is already registered" });
-    } else {
-      res.status(500).json({ message: "Something went wrong" });
-    }
+    return res.status(500).json({ message: e });
   }
 });
 
@@ -62,11 +48,11 @@ router.post("/login", async (req, res) => {
       const token = jwt.sign({ email: email }, secretKey, {
         expiresIn: "1d",
       });
-      res.status(200).json({ token: token });
+      return res.status(200).json({ token: token });
       //
     });
   } catch (e) {
-    res.status(500).json({ message: "Something went wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 });
 
