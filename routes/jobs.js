@@ -17,27 +17,11 @@ const checkToken = (req, res, next) => {
   }
 };
 
-//@route get api/jobs
-//@desc get all jobs
-/*router.get("/", async (req, res) => {
-  try {
-    const jobs = await jobModel.find();
-    res.status(200).json(jobs);
-  } catch (e) {
-    res
-      .status(500)
-      .json({ message: "An error occurred while fetching jobs" });
-  }
-});*/
-
-//@route get api/jobs/:_id
-//@desc get job by id
 router.get("/:_id", checkToken, async (req, res) => {
   try {
     jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
-        console.log("Unauthorized", err);
-        res.sendStatus(403);
+        return res.sendStatus(403);
       } else {
         await controller.getJobById(req, res);
       }
@@ -55,25 +39,9 @@ router.post("/", checkToken, async (req, res) => {
   try {
     jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
-        console.log("Unauthorized", err);
-        res.sendStatus(403);
+        return res.sendStatus(403);
       } else {
-        const { title, details } = req.body;
-        if (!title || !details) {
-          res.status(400).json({ message: "Invalid inputs" });
-        }
-        try {
-          const newJobPost = await jobModel.create({
-            title: title,
-            details: details,
-          });
-          res.status(201).json({
-            message: "Job added successfully",
-            job: newJobPost,
-          });
-        } catch (e) {
-          res.status(500).json({ message: "error while creating job posts" });
-        }
+        await controller.addNewJob(req, res);
       }
     });
   } catch (e) {
@@ -83,36 +51,13 @@ router.post("/", checkToken, async (req, res) => {
 
 //@route PUT api/job/:_id
 //@desc update new job details
-
 router.put("/:_id", checkToken, async (req, res) => {
   try {
     jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
-        console.log("Unauthorized", err);
-        res.sendStatus(403);
+        return res.sendStatus(403);
       } else {
-        const job = await jobModel.findOne({
-          _id: req.params._id,
-        });
-
-        if (!job) {
-          return res.status(400).json({ message: "Job not found." });
-        }
-
-        try {
-          const update = await jobModel.updateOne(
-            { _id: req.params._id },
-            {
-              title: req.body.title,
-              details: req.body.details,
-            }
-          );
-          res.status(200).json({ message: "Job updated sucessfully" });
-        } catch (e) {
-          res
-            .status(501)
-            .json({ message: "Something went wrong, while updating job" });
-        }
+        await controller.updateJobById(req, res);
       }
     });
   } catch (e) {
@@ -128,24 +73,31 @@ router.delete("/:_id", checkToken, async (req, res) => {
   try {
     jwt.verify(req.token, secretKey, async (err, data) => {
       if (err) {
-        console.log("Unauthorized", err);
-        res.sendStatus(403);
+        return res.sendStatus(403);
       } else {
-        const job = await jobModel.findOne({
-          _id: req.params._id,
-        });
-        if (!job) {
-          return res.status(400).json({ message: "Job not found" });
-        }
-        await jobModel.deleteOne({ _id: req.params._id });
-        res.status(200).json({ message: "Job deleted sucessfully" });
+        await controller.deleteJobById(req, res);
       }
     });
   } catch (e) {
     res
       .status(500)
-      .json({ message: "An error occurred while deleting the job" });
+      .json({ message: "An error occurred while updating the Job" });
   }
 });
 
+//@route get api/jobs
+//@desc get all jobs
+/*router.get("/", async (req, res) => {
+  try {
+    const jobs = await jobModel.find();
+    res.status(200).json(jobs);
+  } catch (e) {
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching jobs" });
+  }
+});*/
+
+//@route get api/jobs/:_id
+//@desc get job by id
 module.exports = router;
