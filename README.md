@@ -40,13 +40,13 @@ API available at: http://localhost:3000
 ## API Endpoints
 
 <img width="700" alt="user" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/8a606fa5-104d-45bb-b0f4-8a76c1831371">
-
 <img width="700" alt="Screenshot 2024-06-23 at 11 14 57" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/890d5fc3-0194-4909-b670-128eb0fff7c7">
 
 
 ## Screenshots
 <img width="400" alt="Screenshot 2024-06-23 at 11 09 05" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/01dd9c4b-8c48-4c50-847d-0b4380f781d0">
-<img width="500" alt="Screenshot 2024-06-23 at 11 18 24" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/d7807d05-7775-42a0-ab27-25499e7cf723">
+<img width="500" alt="mongodbAtlas" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/8e0fdbf7-ee0b-478a-b8c1-abfd96f801cc">
+
 
 ## Contributions
 
