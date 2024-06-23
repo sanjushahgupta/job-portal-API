@@ -46,8 +46,8 @@ API available at: http://localhost:3000
 
 ## Screenshots
 <img width="400" alt="Screenshot 2024-06-23 at 11 20 22" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/d9884be8-89c5-40f8-8320-0dd3443bbd0f">
-<img width="500" alt="Screenshot 2024-06-23 at 11 18 24" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/d7807d05-7775-42a0-ab27-25499e7cf723">
 <img width="400" alt="Screenshot 2024-06-23 at 11 09 05" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/01dd9c4b-8c48-4c50-847d-0b4380f781d0">
+<img width="500" alt="Screenshot 2024-06-23 at 11 18 24" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/d7807d05-7775-42a0-ab27-25499e7cf723">
 
 ## Contributions
 
