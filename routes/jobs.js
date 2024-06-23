@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const jobModel = require("../models/Jobs");
 const { secretKey } = require("../config/config");
+const controller = require("../controller/jobs");
 
 const checkToken = (req, res, next) => {
   const header = req.headers["authorization"];
@@ -38,13 +39,7 @@ router.get("/:_id", checkToken, async (req, res) => {
         console.log("Unauthorized", err);
         res.sendStatus(403);
       } else {
-        const job = await jobModel.findOne({
-          _id: req.params._id,
-        });
-        if (!job) {
-          return res.status(404).json({ message: "Job not found." });
-        }
-        res.status(200).json(job);
+        await controller.getJobById(req, res);
       }
     });
   } catch (e) {
@@ -96,20 +91,28 @@ router.put("/:_id", checkToken, async (req, res) => {
         console.log("Unauthorized", err);
         res.sendStatus(403);
       } else {
-        let job = await jobModel.findOne({
+        const job = await jobModel.findOne({
           _id: req.params._id,
         });
+
         if (!job) {
           return res.status(400).json({ message: "Job not found." });
         }
-        const updateJob = await jobModel.updateOne(
-          { _id: req.params._id },
-          {
-            title: req.body.title,
-            details: req.body.details,
-          }
-        );
-        res.status(200).json({ message: "Job updated sucessfully" });
+
+        try {
+          const update = await jobModel.updateOne(
+            { _id: req.params._id },
+            {
+              title: req.body.title,
+              details: req.body.details,
+            }
+          );
+          res.status(200).json({ message: "Job updated sucessfully" });
+        } catch (e) {
+          res
+            .status(501)
+            .json({ message: "Something went wrong, while updating job" });
+        }
       }
     });
   } catch (e) {

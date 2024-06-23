@@ -3,11 +3,13 @@
 An API for managing job posts.
 
 ## Features
+
 - User Authentication: Sign up and log in
 - Job Posting: Create new job listings with various details.
 - Job Management: Edit, update, and delete job posts.
 
 ## Technologies Used
+
 - Node.js
 - MongoDB
 - JWT (JSON Web Tokens)
@@ -21,16 +23,20 @@ https://github.com/sanjushahgupta/job-portal-API.git
 ```
 
 #### Install Dependencies
+
 ```bash
 npm Install
 ```
 
 #### Set Up Environment Variables
+
 ```bash
 DATABASE_URL= database_url
 JWT_SECRET= jwt_secret
 ```
+
 #### Run the Application
+
 ```bash
 npm start
 
@@ -42,11 +48,10 @@ API available at: http://localhost:3000
 <img width="700" alt="user" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/8a606fa5-104d-45bb-b0f4-8a76c1831371">
 <img width="700" alt="Screenshot 2024-06-23 at 11 14 57" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/890d5fc3-0194-4909-b670-128eb0fff7c7">
 
-
 ## Screenshots
+
 <img width="400" alt="Screenshot 2024-06-23 at 11 09 05" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/01dd9c4b-8c48-4c50-847d-0b4380f781d0">
 <img width="500" alt="mongodbAtlas" src="https://github.com/sanjushahgupta/job-portal-API/assets/71315276/8e0fdbf7-ee0b-478a-b8c1-abfd96f801cc">
-
 
 ## Contributions
 
