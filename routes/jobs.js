@@ -2,7 +2,6 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
-const jobModel = require("../models/Jobs");
 const { secretKey } = require("../config/config");
 const controller = require("../controller/jobs");
 
@@ -11,81 +10,31 @@ const checkToken = (req, res, next) => {
   if (typeof header !== undefined) {
     const bearer = header.split(" ");
     req.token = bearer[1];
-    next();
+    try {
+      jwt.verify(req.token, secretKey, async (err, data) => {
+        if (err) {
+          return res.sendStatus(403);
+        } else {
+          next();
+        }
+      });
+    } catch (e) {
+      return res
+        .status(500)
+        .json({ message: "An error occurred while fetching the job" });
+    }
   } else {
     return res.status(403).json({ message: "Unauthorized" });
   }
 };
 
-router.get("/:_id", checkToken, async (req, res) => {
-  try {
-    jwt.verify(req.token, secretKey, async (err, data) => {
-      if (err) {
-        return res.sendStatus(403);
-      } else {
-        await controller.getJobById(req, res);
-      }
-    });
-  } catch (e) {
-    return res
-      .status(500)
-      .json({ message: "An error occurred while fetching the job" });
-  }
-});
+router.get("/:_id", checkToken, controller.getJobById);
 
-//@route post api/jobs/
-//@desc add new job
-router.post("/", checkToken, async (req, res) => {
-  try {
-    jwt.verify(req.token, secretKey, async (err, data) => {
-      if (err) {
-        return res.sendStatus(403);
-      } else {
-        await controller.addNewJob(req, res);
-      }
-    });
-  } catch (e) {
-    return res
-      .status(500)
-      .json({ message: "An error occurred while adding the job" });
-  }
-});
+router.post("/", checkToken, controller.addNewJob);
 
-//@route PUT api/job/:_id
-//@desc update new job details
-router.put("/:_id", checkToken, async (req, res) => {
-  try {
-    jwt.verify(req.token, secretKey, async (err, data) => {
-      if (err) {
-        return res.sendStatus(403);
-      } else {
-        await controller.updateJobById(req, res);
-      }
-    });
-  } catch (e) {
-    return res
-      .status(500)
-      .json({ message: "An error occurred while updating the Job" });
-  }
-});
+router.put("/:_id", checkToken, controller.updateJobById);
 
-//@route Delete api/job/:jobId
-//@desc Delete job
-router.delete("/:_id", checkToken, async (req, res) => {
-  try {
-    jwt.verify(req.token, secretKey, async (err, data) => {
-      if (err) {
-        return res.sendStatus(403);
-      } else {
-        await controller.deleteJobById(req, res);
-      }
-    });
-  } catch (e) {
-    return res
-      .status(500)
-      .json({ message: "An error occurred while updating the Job" });
-  }
-});
+router.delete("/:_id", checkToken, controller.deleteJobById);
 
 //@route get api/jobs
 //@desc get all jobs
@@ -101,5 +50,5 @@ router.delete("/:_id", checkToken, async (req, res) => {
 });*/
 
 //@route get api/jobs/:_id
-//@desc get job by id
+//@desc get job by id*/
 module.exports = router;
