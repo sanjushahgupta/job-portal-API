@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mylocaldb:
+    image: mongo:7.0.12-jammy
+    container_name: mylocaldb
+    environment:
+      - AUTH=yes
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - '27017:27017'
+    volumes:
+      - mylocaldb:/data/db
+
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: jobAppDockerImg
+  #   environment:
+  #     DATABASE_URL: "mongodb://jobboard:pass@localhost:27017/?"
+  #     JWT_SECRET: "123"
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - db
+
+volumes:
+  mylocaldb:
